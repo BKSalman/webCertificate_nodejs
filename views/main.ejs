@@ -1,0 +1,61 @@
+<div class="container --main">
+  <h1 class="Title">ادخل معلوماتك الشخصية وقيم الدورة لانشاء شهادتك</h1>
+  <div class="form-container">
+    <form method="POST" action="/certificate">
+      <div class="item">
+        <label for="Pre">الصفة</label>
+        <select class="form-select" name="Pre">
+          <option selected value="" selected></option>
+          <option value="أ.">أستاذ</option>
+          <option value="م.">مهندس</option>
+          <option value="د.">دكتور</option>
+        </select>
+      </div>
+      <div class="item">
+        <label for="Id">رقم الهوية<span>*</span></label>
+        <input class="form-control" id="Id" type="text" name="Id" required />
+      </div>
+      <div class="item">
+        <label for="Name">الاسم<span>*</span></label>
+        <input class="form-control" id="Name" type="text" name="Name" required />
+      </div>
+      <div class="item">
+        <label for="Email">الايميل<span>*</span></label>
+        <input class="form-control" id="Email" type="email" name="Email" required />
+      </div>
+      <p class="question">ما هو تقييمك العام للدورة؟</p>
+      <div class="Rating">
+        <div class="item">
+          <label for="Professional">الاحترافية<span>*</span></label>
+          <select class="form-select" name="Professional" required>
+            <option selected value="" selected></option>
+            <option value="Excellent">ممتاز</option>
+            <option value="Medium">جيد جدا</option>
+            <option value="Poor">ضعيف</option>
+          </select>
+        </div>
+        <div class="item">
+          <label for="Informative">المعلومات<span>*</span></label>
+          <select class="form-select" name="Informative" required>
+            <option selected value="" selected></option>
+            <option value="Excellent">ممتاز</option>
+            <option value="Medium">جيد جدا</option>
+            <option value="Poor">ضعيف</option>
+          </select>
+        </div>
+        <div class="item">
+          <label for="Visually">البصريات<span>*</span></label>
+          <select class="form-select" name="Visually" required>
+            <option selected value="" selected></option>
+            <option value="Excellent">ممتاز</option>
+            <option value="Medium">جيد جدا</option>
+            <option value="Poor">ضعيف</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-block">
+        <button class="btn btn-primary" type="submit">ارسال</button>
+      </div>
+    </form>
+  </div>
+</div>
