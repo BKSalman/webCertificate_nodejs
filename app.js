@@ -5,10 +5,9 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const expressLayouts = require('express-ejs-layouts')
+const connection = require("./middleware/db");
 require("dotenv").config({ path: ".env" });
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
 
 const app = express();
 const port = process.env.PORT;
@@ -24,6 +23,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+connection();
 
 const routesFiles = fs
   .readdirSync("./routes")

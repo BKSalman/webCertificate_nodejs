@@ -14,7 +14,9 @@
     "express": "~4.16.1",
     "express-ejs-layouts": "^2.5.1",
     "http-errors": "~1.6.3",
+    "mongoose": "^6.2.1",
     "morgan": "~1.9.1",
+    "nodemailer": "^6.7.2",
     "twitter_cldr": "^2.2.0"
   }
 }

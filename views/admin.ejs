@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <h1>Admin</h1>
+        <% for(participant of participants) {%> 
+            <p><%= participant.Name %> </p>
+            <a href="<%= participant.imgURL %>">
+                <img style="width: 500px;" src="<%= participant.imgURL %>" alt="">
+            </a>
+        <% } %> 
+    </div>
+    <div>
+        <h1>Chart</h1>
+        <h2>pro</h2>
+        <div class="graphs">
+            <canvas id="proChart"></canvas>
+            <h2>info</h2>
+            <canvas id="infoChart"></canvas>
+            <h2>visual</h2>
+            <canvas id="visChart"></canvas>
+        </div>
+        
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const labels = [
+          'Excellent',
+          'Medium',
+          'Poor',
+        ];
+        const Participants = <%- JSON.stringify(participants) %>;
+        const Data = Participants.map(participant => participant.rating);
+        const proERating = Data.map(data => data.rating1).filter(rating => rating === 'Excellent');
+        const proMRating = Data.map(data => data.rating1).filter(rating => rating === 'Medium');
+        const proPRating = Data.map(data => data.rating1).filter(rating => rating === 'Poor');
+        const infoERating = Data.map(data => data.rating2).filter(rating => rating === 'Excellent');
+        const infoMRating = Data.map(data => data.rating2).filter(rating => rating === 'Medium');
+        const infoPRating = Data.map(data => data.rating2).filter(rating => rating === 'Poor');
+        const visERating = Data.map(data => data.rating3).filter(rating => rating === 'Excellent');
+        const visMRating = Data.map(data => data.rating3).filter(rating => rating === 'Medium');
+        const visPRating = Data.map(data => data.rating3).filter(rating => rating === 'Poor');
+
+        const proData = {
+          labels: labels,
+          datasets: [{
+            backgroundColor: [
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)',
+                'rgb(255, 99, 132)',
+            ],
+            borderColor: 'rgb(0, 0, 0)',
+            data: [proERating.length,proMRating.length,proPRating.length],
+          }]
+        };
+        
+        const infoData = {
+          labels: labels,
+          datasets: [{
+            backgroundColor: [
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)',
+                'rgb(255, 99, 132)',
+            ],
+            borderColor: 'rgb(0, 0, 0)',
+            data: [infoERating.length,infoMRating.length,infoPRating.length],
+          }]
+        };
+
+        const visData = {
+          labels: labels,
+          datasets: [{
+            backgroundColor: [
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)',
+                'rgb(255, 99, 132)',
+            ],
+            borderColor: 'rgb(0, 0, 0)',
+            data: [visERating.length,visMRating.length,visPRating.length],
+          }]
+        };
+      
+        const proConfig = {
+          type: 'pie',
+          data: proData,
+          options: {}
+        };
+
+        const infoConfig = {
+          type: 'pie',
+          data: infoData,
+          options: {}
+        };
+
+        const visConfig = {
+          type: 'pie',
+          data: visData,
+          options: {}
+        };
+
+        const proChart = new Chart(
+            document.getElementById('proChart'),
+            proConfig
+        );
+        const infoChart = new Chart(
+            document.getElementById('infoChart'),
+            infoConfig
+        );
+        const visChart = new Chart(
+            document.getElementById('visChart'),
+            visConfig
+        );
+
+      </script>
+</body>
+</html>
