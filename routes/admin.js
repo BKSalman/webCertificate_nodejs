@@ -1,18 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { Participant } = require("../models/Participant");
+const { admin } = require("../controllers/admin");
 
-router.get("/", function (req, res, next) {
-  Participant.find({}, (err, participants) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.render("admin", {
-        title: "Admin",
-        participants: participants,
-      });
-    }
-  });
-});
+router.get("/", admin);
 
 module.exports = { path: "/admin", router };
