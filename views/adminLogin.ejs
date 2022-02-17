@@ -1,0 +1,20 @@
+<section class="login container">
+    <% if (locals.messages) { %>
+     <div class="alert alert-danger"><%= messages.error %></div> 
+    <% } %>
+      <form method="POST" action="/admin/login" class="admin-login">
+          <div class="form-group">
+            <label for="usernameInput">اسم المستخدم</label>
+            <input type="text" class="form-control" id="usernameInput" placeholder="username" name="username">
+          </div>
+          <div class="form-group">
+            <label for="passwordInput">كلمة المرور</label>
+            <input type="password" class="form-control" id="passwordInput" placeholder="Password" name="password">
+          </div>
+          <div>
+          <button class="btn btn-outline-info mt-3" type="submit">سجل الدخول</button>
+          </div>
+      </form>
+  </section>
+
+  <!-- onclick="adminLogin(event)" -->

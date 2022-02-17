@@ -6,6 +6,7 @@
     "start": "nodemon app.js"
   },
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "canvas": "^2.9.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
@@ -13,10 +14,13 @@
     "ejs": "^3.1.6",
     "express": "~4.16.1",
     "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.17.2",
     "http-errors": "~1.6.3",
     "mongoose": "^6.2.1",
     "morgan": "~1.9.1",
     "nodemailer": "^6.7.2",
+    "passport": "^0.5.2",
+    "passport-local": "^1.0.0",
     "twitter_cldr": "^2.2.0"
   }
 }

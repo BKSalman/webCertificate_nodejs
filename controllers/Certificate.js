@@ -73,7 +73,7 @@ const generateCertificate = async (req, res) => {
     }
   });
   
-  res.render('Certificate', { imgURL })
+  res.render('certificate', { imgURL })
  
 };
 

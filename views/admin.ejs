@@ -1,25 +1,101 @@
-<h1>Admin</h1>
-<div class="main-container">
-  <% for(participant of participants) {%>
+<div class="mb-5">
+  <h1><%= user.username %> </h1>
+  <a href="/admin/logout">logout</a>
+  <button id="form-modal-btn" class="btn btn-outline-primary">اضف مشارك جديد</button>
+  <div id="form-modal" class="form-modal">
+      <form class="admin-add">
+        <div class="item">
+          <label for="Pre">الصفة</label>
+          <select class="form-select" name="Pre">
+            <option selected value="" selected></option>
+            <option value="أ.">أستاذ</option>
+            <option value="م.">مهندس</option>
+            <option value="د.">دكتور</option>
+          </select>
+        </div>
+        <div class="item">
+          <label for="Id">رقم الهوية<span>*</span></label>
+          <input class="form-control" id="Id" type="text" name="Id" required />
+        </div>
+        <div class="item">
+          <label for="Name">الاسم<span>*</span></label>
+          <input class="form-control" id="Name" type="text" name="Name" required />
+        </div>
+        <div class="item">
+          <label for="Email">الايميل<span>*</span></label>
+          <input class="form-control" id="Email" type="email" name="Email" required />
+        </div>
+        <p class="question">ما هو تقييمك العام للدورة؟</p>
+        <div class="Rating">
+          <div class="item">
+            <label for="Professional">الاحترافية<span>*</span></label>
+            <select class="form-select" name="Professional" required>
+              <option selected value="" selected></option>
+              <option value="Excellent">ممتاز</option>
+              <option value="Medium">جيد جدا</option>
+              <option value="Poor">ضعيف</option>
+            </select>
+          </div>
+          <div class="item">
+            <label for="Informative">المعلومات<span>*</span></label>
+            <select class="form-select" name="Informative" required>
+              <option selected value="" selected></option>
+              <option value="Excellent">ممتاز</option>
+              <option value="Medium">جيد جدا</option>
+              <option value="Poor">ضعيف</option>
+            </select>
+          </div>
+          <div class="item">
+            <label for="Visually">البصريات<span>*</span></label>
+            <select class="form-select" name="Visually" required>
+              <option selected value="" selected></option>
+              <option value="Excellent">ممتاز</option>
+              <option value="Medium">جيد جدا</option>
+              <option value="Poor">ضعيف</option>
+            </select>
+          </div>
+        </div>
+        <div class="btn-block">
+          <button class="btn btn-primary" onclick="addParticipant(event)" type="submit">ارسال</button>
+        </div>
+      </form>
+  </div>
+</div>
+<div class="participants-container">
+  <% participants.forEach( (participant, index) => { %>
   <div class="custom-card">
     <div class="card-info">
+      <p class="index hidden"><%= index %></p>
       <p><%= participant.Pre %><%= participant.Name %></p>
-      <p><%= participant.Id %></p>
+      <p>|</p>
+      <p class="pId"><%= participant.Id %></p>
+      <p>|</p>
       <p><%= participant.Email %></p>
-      <button class="btn cert-btn btn-outline-primary mb-3">الشهادة</button>
     </div>
-    <div class="cert-image">
+    <div>
+      <button data-modal-target="#modal<%= index %>" class="btn delete-btn btn-outline-primary mb-3">الحذف</button>
+      <div id="modal<%= index %>" class="delete-modal">
+        <div class="modal-content">
+          <h5 class="modal-title">هل تريد حذف المشارك؟</h5>
+          <button data-participant-id="<%= participant.Id %>" onclick="confirmDelete(event)" class="btn btn-outline-danger">نعم</button>
+          <button data-dismiss-modal class="btn btn-outline-primary">لا</button>
+        </div>
+      </div>
+      <div id="overlay"></div>
+      <button class="btn cert-btn btn-outline-primary mb-3">الشهادة</button>
+          </div>
+          <div class="cert-image">
       <a href="<%= participant.imgURL %>">
         <img src="<%= participant.imgURL %>" alt="" />
       </a>
+          </div>
     </div>
-  </div>
-  <% } %>
+  <% }) %>
 </div>
-<div>
+<div class="chart-container">
   <h1>Chart</h1>
-  <h2>pro</h2>
   <div class="graphs">
+    <h2>pro</h2>
     <canvas id="proChart"></canvas>
     <h2>info</h2>
     <canvas id="infoChart"></canvas>
@@ -29,7 +105,6 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-
   
   const labels = [
     'Excellent',
@@ -37,6 +112,7 @@
     'Poor',
   ];
   const Participants = <%- JSON.stringify(participants) %>;
+  
   const Data = Participants.map(participant => participant.rating);
   const proERating = Data.map(data => data.rating1).filter(rating => rating === 'Excellent');
   const proMRating = Data.map(data => data.rating1).filter(rating => rating === 'Medium');

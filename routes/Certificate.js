@@ -6,7 +6,6 @@ router.post('/', generateCertificate);
 
 router.get('/', (req, res) => {
     res.redirect('/')
-    }
-);
+});
 
 module.exports = { path: "/certificate", router };
