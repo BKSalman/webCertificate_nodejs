@@ -4,6 +4,36 @@ const {Participant} = require('../models/Participant');
 const Canvas = require('canvas')
 const nodemailer = require('nodemailer');
 
+const sendEmail = async (Id, Email, outputPath) => {
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EADDRESS,
+      pass: process.env.EPASS
+    }
+  });
+  
+  const mailOptions = {
+    from: process.env.EADDRESS,
+    to: Email,
+    subject: 'شهادة',
+    attachments: [
+      {// file on disk as an attachment
+        filename: `${Id}.jpg`,
+        path: outputPath
+      }
+    ],
+  };
+  
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+}
+
 const generateCertificate = async (req, res) => {
   const { Pre, Id, Name, Email } = req.body;
   const imagePath = path.join(__dirname, "../public/templates/Certificate.jpg");
@@ -29,52 +59,30 @@ const generateCertificate = async (req, res) => {
       },
   })
   participant.save()
-  .then(() => {console.log("done");})
-  .catch((err) => {
-    console.log("error");
-    // throw err
+  .then(async () => {
+    console.log("done");
+    const image = await Canvas.loadImage(imagePath)
+    ctx.drawImage(image, 0, 0)
+    ctx.font = 'bold 32px Arial'
+    ctx.fillText(Pre, 740 - ctx.measureText(Pre).width, 330)
+    ctx.font = 'bold 32px Arial'
+    ctx.fillText(Name, 720 - ctx.measureText(Name).width, 330)
+    ctx.font = 'bold 32px Arial'
+    ctx.fillText(Id, 205 - ctx.measureText(Id).width, 330)
+    const writeStream = fs.createWriteStream(outputPath)
+    canvas.createPNGStream().pipe(writeStream)
+    writeStream.on('finish', () => {
+      console.log('The PNG file was created.')
+      
+      // sendEmail(Id, Email, outputPath)
+      
+      res.redirect(`/certificate/${Id}`)
+    })
   })
-
-  const image = await Canvas.loadImage(imagePath)
-  ctx.drawImage(image, 0, 0)
-  ctx.font = 'bold 32px Arial'
-  ctx.fillText(Pre, 740 - ctx.measureText(Pre).width, 330)
-  ctx.font = 'bold 32px Arial'
-  ctx.fillText(Name, 720 - ctx.measureText(Name).width, 330)
-  ctx.font = 'bold 32px Arial'
-  ctx.fillText(Id, 205 - ctx.measureText(Id).width, 330)
-  canvas.createPNGStream().pipe(fs.createWriteStream(outputPath))
-
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.EADDRESS,
-      pass: process.env.EPASS
-    }
-  });
-  
-  const mailOptions = {
-    from: process.env.EADDRESS,
-    to: Email,
-    subject: 'شهادة :)',
-    attachments: [
-      {// file on disk as an attachment
-        filename: `${Id}.jpg`,
-        path: outputPath
-      }
-    ],
-  };
-  
-  transporter.sendMail(mailOptions, function(error, info){
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('Email sent: ' + info.response);
-    }
-  });
-  
-  res.render('certificate', { imgURL })
- 
+  .catch((err) => {
+    // console.log("error");
+    res.send("تم تسجيل هذا المشارك من قبل");
+  })
 };
 
 module.exports = {

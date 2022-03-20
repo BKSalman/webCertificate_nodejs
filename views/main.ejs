@@ -1,4 +1,9 @@
 <div class="container --main">
+  <% if (locals.error) { %>
+    <div class="alert alert-danger" role="alert">
+      <%= locals.error %>
+    </div>
+  <% } %>
   <h1 class="Title">ادخل معلوماتك الشخصية وقيم الدورة لانشاء شهادتك</h1>
   <div class="form-container">
     <form method="POST" action="/certificate">

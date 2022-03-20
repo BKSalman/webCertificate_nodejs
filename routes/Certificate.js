@@ -1,11 +1,14 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { generateCertificate } = require('../controllers/Certificate');
+const { Participant } = require("../models/Participant");
+const { generateCertificate } = require("../controllers/Certificate");
 
-router.post('/', generateCertificate);
+router.post("/", generateCertificate);
 
-router.get('/', (req, res) => {
-    res.redirect('/')
+router.get("/:id", async (req, res) => {
+    const { id } = req.params;
+    const participant = await Participant.findOne({ Id: id })
+  res.render("certificate", { imgURL: participant.imgURL });
 });
 
 module.exports = { path: "/certificate", router };
